@@ -42,20 +42,14 @@ public class TicketService {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id: " + id));
 
-        if (ticketDetails.getDate() != null) {
-            ticket.setDate(ticketDetails.getDate());
-        }
-        if (ticketDetails.getTime() != null) {
-            ticket.setTime(ticketDetails.getTime());
+        if (ticketDetails.getDateTime() != null) {
+            ticket.setDateTime(ticketDetails.getDateTime());
         }
         if (ticketDetails.getPrice() != null) {
             ticket.setPrice(ticketDetails.getPrice());
         }
-        if (ticketDetails.getSeatRow() != null) {
-            ticket.setSeatRow(ticketDetails.getSeatRow());
-        }
-        if (ticketDetails.getSeatNumber() != null) {
-            ticket.setSeatNumber(ticketDetails.getSeatNumber());
+        if (ticketDetails.getSeat() != null) {
+            ticket.setSeat(ticketDetails.getSeat());
         }
         if (ticketDetails.getTelephoneNumber() != null) {
             ticket.setTelephoneNumber(ticketDetails.getTelephoneNumber());
