@@ -16,7 +16,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "tickets")
@@ -33,7 +33,7 @@ public class Ticket {
 
     @Column(name = "datetime")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date dateTime;
+    private LocalDate dateTime;
 
     @Column(name = "seat")
     private String seat;
@@ -56,19 +56,16 @@ public class Ticket {
     @Column(name = "film_name")
     private String filmName;
 
-    @Column(name = "hall_number")
-    private Integer hallNumber;
+    @Column(nullable = false)
+    private Boolean validated;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "validated_by", referencedColumnName = "worker_id")
     private StaffWorker validatedBy;
 
-    @Column(nullable = false)
-    private Boolean validated;
-
     @Column(name = "validated_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date validatedAt;
+    private LocalDate validatedAt;
 
     @Column(name = "additional_services")
     private String additionalServices;

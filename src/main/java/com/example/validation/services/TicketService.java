@@ -69,8 +69,8 @@ public class TicketService {
         if (ticketDetails.isValidated() != null) {
             ticket.setValidated(ticketDetails.isValidated());
         }
-        if (ticketDetails.getHallNumber() != null) {
-            ticket.setHallNumber(ticketDetails.getHallNumber());
+        if (ticketDetails.getHall() != null) {
+            ticket.setHall(ticketDetails.getHall());
         }
         return ticketRepository.save(ticket);
     }
