@@ -6,8 +6,6 @@ CREATE TABLE staff_workers (
   PRIMARY KEY (worker_id)
 );
 
-ALTER TABLE tickets DROP INDEX seat_row, ADD UNIQUE KEY (seat, datetime, hall_number);
-
 ALTER TABLE tickets
 ADD COLUMN hall VARCHAR(50),
 ADD COLUMN datetime DATETIME,
@@ -15,6 +13,8 @@ ADD COLUMN seat VARCHAR(10),
 ADD COLUMN validated_by INT,
 ADD COLUMN validated_at DATETIME DEFAULT NULL,
 ADD COLUMN additional_services VARCHAR(255);
+
+ALTER TABLE tickets DROP INDEX seat_row, ADD UNIQUE KEY (seat, datetime, hall_number);
 
 ALTER TABLE tickets
 DROP COLUMN seat_row,

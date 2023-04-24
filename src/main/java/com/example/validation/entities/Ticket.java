@@ -9,8 +9,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,7 +30,6 @@ public class Ticket {
     private String hall;
 
     @Column(name = "datetime")
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDate dateTime;
 
     @Column(name = "seat")
@@ -64,7 +61,6 @@ public class Ticket {
     private StaffWorker validatedBy;
 
     @Column(name = "validated_at")
-    @Temporal(TemporalType.TIMESTAMP)
     private LocalDate validatedAt;
 
     @Column(name = "additional_services")

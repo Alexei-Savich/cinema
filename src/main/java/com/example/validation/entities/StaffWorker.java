@@ -18,7 +18,9 @@ import lombok.Setter;
 @Setter
 @Table(name = "staff_workers")
 public class StaffWorker {
+
     @Id
+    @Column(name = "worker_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long workerId;
 
@@ -31,5 +33,4 @@ public class StaffWorker {
     @Column(name = "email")
     private String email;
 
-    // Constructors, getters, and setters
 }

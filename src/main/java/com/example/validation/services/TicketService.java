@@ -7,8 +7,7 @@ import com.example.validation.repositories.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -102,8 +101,8 @@ public class TicketService {
         return ticket.isValidated();
     }
 
-    public List<Ticket> findTicketsByFilmNameAndTimeAndDate(String filmName, LocalTime time, LocalDate date) {
-        return ticketRepository.findByFilmNameAndDateAndTime(filmName, date, time);
+    public List<Ticket> findTicketsByFilmNameAndTimeDate(String filmName, LocalDateTime dateTime) {
+        return ticketRepository.findByFilmNameAndDateTime(filmName, dateTime);
     }
 
 }
