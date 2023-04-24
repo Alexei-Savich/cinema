@@ -20,17 +20,9 @@ public class TicketService {
         this.ticketRepository = ticketRepository;
     }
 
-    public List<Ticket> getAllTickets() {
-        return ticketRepository.findAll();
-    }
-
     public Ticket getTicketById(Long id) {
         return ticketRepository.findById(id)
                 .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id: " + id));
-    }
-
-    public Ticket addTicket(Ticket ticket) {
-        return ticketRepository.save(ticket);
     }
 
     public Ticket createTicket(Ticket ticket) {
