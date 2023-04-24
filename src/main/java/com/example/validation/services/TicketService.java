@@ -40,6 +40,7 @@ public class TicketService {
         ticket.setFilmName(ticketDetails.getFilmName());
         ticket.setValidated(false);
         ticket.setHall(ticketDetails.getHall());
+        ticket.setAdditionalServices(ticketDetails.getAdditionalServices());
         return ticketRepository.save(ticket);
     }
 
@@ -77,6 +78,9 @@ public class TicketService {
         }
         if (ticketDetails.getHall() != null) {
             ticket.setHall(ticketDetails.getHall());
+        }
+        if(ticketDetails.getAdditionalServices() != null){
+            ticket.setAdditionalServices(ticketDetails.getAdditionalServices());
         }
         return ticketRepository.save(ticket);
     }
