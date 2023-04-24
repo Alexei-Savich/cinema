@@ -1,9 +1,9 @@
 package com.example.validation.controllers;
 
+import com.example.validation.dto.TicketDto;
 import com.example.validation.entities.Ticket;
 import com.example.validation.services.TicketService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -37,7 +37,7 @@ public class TicketController {
     }
 
     @PostMapping("tickets")
-    public ResponseEntity<Ticket> addTicket(@RequestBody Ticket ticket) {
+    public ResponseEntity<Ticket> addTicket(@RequestBody TicketDto ticket) {
         Ticket ticketNew = ticketService.createTicket(ticket);
         return new ResponseEntity<>(ticketNew, HttpStatus.CREATED);
     }
@@ -49,7 +49,7 @@ public class TicketController {
     }
 
     @PutMapping("tickets/{id}")
-    public ResponseEntity<Ticket> updateTicket(@PathVariable Long id, @RequestBody Ticket ticketDetails) {
+    public ResponseEntity<Ticket> updateTicket(@PathVariable Long id, @RequestBody TicketDto ticketDetails) {
         Ticket ticket = ticketService.updateTicket(id, ticketDetails);
         return new ResponseEntity<>(ticket, HttpStatus.OK);
     }

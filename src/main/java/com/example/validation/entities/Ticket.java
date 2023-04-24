@@ -13,8 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tickets")
@@ -30,13 +29,13 @@ public class Ticket {
     private String hall;
 
     @Column(name = "datetime")
-    private LocalDate dateTime;
+    private LocalDateTime dateTime;
 
     @Column(name = "seat")
     private String seat;
 
     @Column(name = "price")
-    private BigDecimal price;
+    private Float price;
 
     @Column(name = "telephone_number")
     private String telephoneNumber;
@@ -61,7 +60,7 @@ public class Ticket {
     private StaffWorker validatedBy;
 
     @Column(name = "validated_at")
-    private LocalDate validatedAt;
+    private LocalDateTime validatedAt;
 
     @Column(name = "additional_services")
     private String additionalServices;

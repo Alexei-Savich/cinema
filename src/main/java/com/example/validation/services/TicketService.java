@@ -1,5 +1,6 @@
 package com.example.validation.services;
 
+import com.example.validation.dto.TicketDto;
 import com.example.validation.entities.Ticket;
 import com.example.validation.exceptions.TicketAlreadyValidatedException;
 import com.example.validation.exceptions.TicketNotFoundException;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
@@ -25,16 +27,29 @@ public class TicketService {
                 .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id: " + id));
     }
 
-    public Ticket createTicket(Ticket ticket) {
+    public Ticket createTicket(TicketDto ticketDetails) {
+        Ticket ticket = new Ticket();
+        LocalDateTime dateTime = LocalDateTime.parse(ticketDetails.getDateTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+        ticket.setDateTime(dateTime);
+        ticket.setPrice(ticketDetails.getPrice());
+        ticket.setSeat(ticketDetails.getSeat());
+        ticket.setTelephoneNumber(ticketDetails.getTelephoneNumber());
+        ticket.setName(ticketDetails.getName());
+        ticket.setSurname(ticketDetails.getSurname());
+        ticket.setEmail(ticketDetails.getEmail());
+        ticket.setFilmName(ticketDetails.getFilmName());
+        ticket.setValidated(false);
+        ticket.setHall(ticketDetails.getHall());
         return ticketRepository.save(ticket);
     }
 
-    public Ticket updateTicket(Long id, Ticket ticketDetails) {
+    public Ticket updateTicket(Long id, TicketDto ticketDetails) {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id: " + id));
 
         if (ticketDetails.getDateTime() != null) {
-            ticket.setDateTime(ticketDetails.getDateTime());
+            LocalDateTime dateTime = LocalDateTime.parse(ticketDetails.getDateTime(), DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
+            ticket.setDateTime(dateTime);
         }
         if (ticketDetails.getPrice() != null) {
             ticket.setPrice(ticketDetails.getPrice());
@@ -57,8 +72,8 @@ public class TicketService {
         if (ticketDetails.getFilmName() != null) {
             ticket.setFilmName(ticketDetails.getFilmName());
         }
-        if (ticketDetails.isValidated() != null) {
-            ticket.setValidated(ticketDetails.isValidated());
+        if (ticketDetails.getValidated() != null) {
+            ticket.setValidated(ticketDetails.getValidated());
         }
         if (ticketDetails.getHall() != null) {
             ticket.setHall(ticketDetails.getHall());
@@ -80,6 +95,8 @@ public class TicketService {
 
         if (!ticket.isValidated()) {
             ticket.setValidated(true);
+            ticket.setValidatedAt(LocalDateTime.now());
+            //TODO ADD VALIDATED BY WHO
             return ticketRepository.save(ticket);
         } else {
             throw new TicketAlreadyValidatedException("Ticket already validated with id: " + id);
