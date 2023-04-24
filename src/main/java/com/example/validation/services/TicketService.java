@@ -41,6 +41,7 @@ public class TicketService {
         ticket.setValidated(false);
         ticket.setHall(ticketDetails.getHall());
         ticket.setAdditionalServices(ticketDetails.getAdditionalServices());
+        ticket.setSessionId(ticketDetails.getSessionId());
         return ticketRepository.save(ticket);
     }
 
@@ -82,6 +83,9 @@ public class TicketService {
         if(ticketDetails.getAdditionalServices() != null){
             ticket.setAdditionalServices(ticketDetails.getAdditionalServices());
         }
+        if(ticketDetails.getSessionId() != null){
+            ticket.setSessionId(ticketDetails.getSessionId());
+        }
         return ticketRepository.save(ticket);
     }
 
@@ -118,4 +122,7 @@ public class TicketService {
         return ticketRepository.findByFilmNameAndDateTime(filmName, dateTime);
     }
 
+    public List<Ticket> findTicketsBySessionId(Long sessionId) {
+        return ticketRepository.findBySessionId(sessionId);
+    }
 }

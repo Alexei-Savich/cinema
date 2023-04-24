@@ -73,4 +73,10 @@ public class TicketController {
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 
+    @GetMapping("tickets/session/{sessionId}")
+    public ResponseEntity<List<Ticket>> getTicketsByMovieAndTime(@PathVariable Long sessionId){
+        List<Ticket> tickets = ticketService.findTicketsBySessionId(sessionId);
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
+
 }

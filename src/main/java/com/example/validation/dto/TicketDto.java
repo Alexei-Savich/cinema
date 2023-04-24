@@ -33,5 +33,6 @@ public class TicketDto {
     private Long validatedById;
     private LocalDate validatedAt;
     private String additionalServices;
+    private Long sessionId;
 
 }

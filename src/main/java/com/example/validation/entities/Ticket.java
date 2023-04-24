@@ -65,6 +65,9 @@ public class Ticket {
     @Column(name = "additional_services")
     private String additionalServices;
 
+    @Column(name = "session_id")
+    private Long sessionId;
+
     public Boolean isValidated() {
         return validated;
     }
