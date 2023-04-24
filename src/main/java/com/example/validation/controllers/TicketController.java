@@ -24,34 +24,28 @@ public class TicketController {
         this.ticketService = ticketService;
     }
 
-
-    // Add a new ticket
-    @PostMapping("")
+    @PostMapping("tickets")
     public Ticket addTicket(@RequestBody Ticket ticket) {
         return ticketService.addTicket(ticket);
     }
 
-    // Delete a ticket by ID
-    @DeleteMapping("/{id}")
+    @DeleteMapping("tickets/{id}")
     public ResponseEntity<?> deleteTicket(@PathVariable Long id) {
         ticketService.deleteTicket(id);
         return ResponseEntity.ok().build();
     }
 
-    // Update a ticket by ID
-    @PutMapping("/{id}")
+    @PutMapping("tickets/{id}")
     public Ticket updateTicket(@PathVariable Long id, @RequestBody Ticket ticketDetails) {
         return ticketService.updateTicket(id, ticketDetails);
     }
 
-    // Validate a ticket by ID
-    @PutMapping("/{id}/validate")
+    @PutMapping("tickets/{id}/validate")
     public Ticket validateTicket(@PathVariable Long id) {
         return ticketService.validateTicket(id);
     }
 
-    // Check the validation status of a ticket by ID
-    @GetMapping("/{id}/validation-status")
+    @GetMapping("tickets/{id}/validation-status")
     public boolean checkValidationStatus(@PathVariable Long id) {
         return ticketService.checkValidationStatus(id);
     }
