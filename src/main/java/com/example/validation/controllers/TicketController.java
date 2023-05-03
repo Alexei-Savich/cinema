@@ -74,8 +74,14 @@ public class TicketController {
     }
 
     @GetMapping("tickets/session/{sessionId}")
-    public ResponseEntity<List<Ticket>> getTicketsByMovieAndTime(@PathVariable Long sessionId){
+    public ResponseEntity<List<Ticket>> getTicketsBySessionId(@PathVariable Long sessionId){
         List<Ticket> tickets = ticketService.findTicketsBySessionId(sessionId);
+        return new ResponseEntity<>(tickets, HttpStatus.OK);
+    }
+
+    @GetMapping("tickets/email/{email}")
+    public ResponseEntity<List<Ticket>> getTicketsByEmail(@PathVariable String email){
+        List<Ticket> tickets = ticketService.findTicketsByEmail(email);
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
 

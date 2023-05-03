@@ -125,4 +125,8 @@ public class TicketService {
     public List<Ticket> findTicketsBySessionId(Long sessionId) {
         return ticketRepository.findBySessionId(sessionId);
     }
+
+    public List<Ticket> findTicketsByEmail(String email){
+        return ticketRepository.findByEmail(email);
+    }
 }

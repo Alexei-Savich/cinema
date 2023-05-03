@@ -15,4 +15,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
     List<Ticket> findByFilmNameAndDateTime(String filmName, LocalDateTime dateTime);
 
     List<Ticket> findBySessionId(Long sessionId);
+
+    List<Ticket> findByEmail(String email);
 }
