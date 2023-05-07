@@ -33,6 +33,7 @@ public class SecurityConfig {
                 .requestMatchers("/tickets/**").permitAll()
                 .requestMatchers("/staff/**").hasAnyRole("STAFF", "ADMIN")
                 .requestMatchers("/admin/**").hasRole("ADMIN")
+                .requestMatchers("/").hasRole("ADMIN")
                 .and()
                 .formLogin()
                 .and()

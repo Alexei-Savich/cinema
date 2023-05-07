@@ -1,87 +1,92 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
-  <title>Contact Details</title>
-  <link th:href="@{/css/styles.css}" rel="stylesheet" />
-  <meta th:name="_csrf" th:content="${_csrf.token}"/>
+    <title>Contact Details</title>
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+    <meta th:name="_csrf" th:content="${_csrf.token}"/>
 </head>
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Ticket Details</title>
+    <title>Ticket Details</title>
 </head>
 <body>
 
 <h1>
-  Contact Details
+    Ticket Details
 </h1>
+
+<img id="qrCodeImage" th:src="@{'/tickets/qr/' + ${ticket.id}}" style="display: block" />
+
 <table>
-  <tr>
-    <th>ID:</th>
-    <td th:text="${ticket.id}"></td>
-  </tr>
-  <tr>
-    <th>Hall:</th>
-    <td th:text="${ticket.hall}"></td>
-  </tr>
-  <tr>
-    <th>Date and time:</th>
-    <td th:text="${ticket.dateTime}"></td>
-  </tr>
-  <tr>
-    <th>Seat:</th>
-    <td th:text="${ticket.seat}"></td>
-  </tr>
-  <tr>
-    <th>Price:</th>
-    <td th:text="${ticket.price}"></td>
-  </tr>
-  <tr>
-    <th>First Name:</th>
-    <td th:text="${ticket.name}"></td>
-  </tr>
-  <tr>
-    <th>Last Name:</th>
-    <td th:text="${ticket.surname}"></td>
-  </tr>
-  <tr>
-    <th>Telephone number:</th>
-    <td th:text="${ticket.telephoneNumber}"></td>
-  </tr>
-  <tr>
-    <th>Email:</th>
-    <td th:text="${ticket.email}"></td>
-  </tr>
-  <tr>
-    <th>It the ticket validated:</th>
-    <td th:text="${ticket.validated}"></td>
-  </tr>
-  <tr>
-    <th>Film name:</th>
-    <td th:text="${ticket.filmName}"></td>
-  </tr>
-  <tr>
-    <th>Validated by:</th>
-    <td th:text="${staffWorker != null}? ${staffWorker.email}: '-'"></td>
-  </tr>
-  <tr>
-    <th>Validated at:</th>
-    <td th:text="${ticket.validatedAt} ?: '-'"></td>
-  </tr>
-  <tr>
-    <th>Additional services:</th>
-    <td th:text="${ticket.additionalServices} ?: '-'"></td>
-  </tr>
-  <tr>
-    <th>Session ID:</th>
-    <td th:text="${ticket.sessionId}"></td>
-  </tr>
+    <tr>
+        <th>ID:</th>
+        <td th:text="${ticket.id}"></td>
+    </tr>
+    <tr>
+        <th>Hall:</th>
+        <td th:text="${ticket.hall}"></td>
+    </tr>
+    <tr>
+        <th>Date and time:</th>
+        <td th:text="${ticket.dateTime}"></td>
+    </tr>
+    <tr>
+        <th>Seat:</th>
+        <td th:text="${ticket.seat}"></td>
+    </tr>
+    <tr>
+        <th>Price:</th>
+        <td th:text="${ticket.price}"></td>
+    </tr>
+    <tr>
+        <th>First Name:</th>
+        <td th:text="${ticket.name}"></td>
+    </tr>
+    <tr>
+        <th>Last Name:</th>
+        <td th:text="${ticket.surname}"></td>
+    </tr>
+    <tr>
+        <th>Telephone number:</th>
+        <td th:text="${ticket.telephoneNumber}"></td>
+    </tr>
+    <tr>
+        <th>Email:</th>
+        <td th:text="${ticket.email}"></td>
+    </tr>
+    <tr>
+        <th>It the ticket validated:</th>
+        <td th:text="${ticket.validated}"></td>
+    </tr>
+    <tr>
+        <th>Film name:</th>
+        <td th:text="${ticket.filmName}"></td>
+    </tr>
+    <tr>
+        <th>Validated by:</th>
+        <td th:text="${staffWorker != null}? ${staffWorker.email}: '-'"></td>
+    </tr>
+    <tr>
+        <th>Validated at:</th>
+        <td th:text="${ticket.validatedAt} ?: '-'"></td>
+    </tr>
+    <tr>
+        <th>Additional services:</th>
+        <td th:text="${ticket.additionalServices} ?: '-'"></td>
+    </tr>
+    <tr>
+        <th>Session ID:</th>
+        <td th:text="${ticket.sessionId}"></td>
+    </tr>
 </table>
 
-<button id="validateButton" class="btnDanger" th:if="${!ticket.validated}" type="button">Validate</button>
+<div sec:authorize="hasRole('ROLE_STAFF')">
+    <button id="validateButton" class="btnDanger" th:if="${!ticket.validated}" type="button">Validate</button>
+</div>
 
 <form th:action="@{/}" method="get">
-  <button type="submit">Back</button>
+    <button type="submit">Back</button>
 </form>
 
 <script th:inline="javascript">
@@ -91,6 +96,7 @@
     var csrfToken = document.querySelector('meta[name="_csrf"]').content;
 
 /*]]>*/
+
 </script>
 
 <script>
@@ -111,6 +117,7 @@
       alert(`Error validating ticket: ${error}`);
     }
   });
+
 </script>
 
 </body>

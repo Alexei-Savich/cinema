@@ -3,8 +3,16 @@ package com.example.validation.controllers;
 import com.example.validation.dto.TicketDto;
 import com.example.validation.entities.Ticket;
 import com.example.validation.services.TicketService;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,6 +23,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -22,6 +32,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/tickets")
 public class TicketController {
+
+    @Value("${vars.server-ip}")
+    private String serverIp;
 
     private final TicketService ticketService;
 
@@ -78,4 +91,24 @@ public class TicketController {
         List<Ticket> tickets = ticketService.findTicketsByEmail(email);
         return new ResponseEntity<>(tickets, HttpStatus.OK);
     }
+
+    @GetMapping("/qr/{id}")
+    public ResponseEntity<byte[]> generateQrCode(@PathVariable Long id) throws WriterException, IOException {
+        String qrCodeText = "http://" + serverIp + "/tickets?ticketId=" + id;
+        int qrCodeWidth = 250;
+        int qrCodeHeight = 250;
+        String fileType = "png";
+
+        QRCodeWriter qrCodeWriter = new QRCodeWriter();
+        BitMatrix bitMatrix = qrCodeWriter.encode(qrCodeText, BarcodeFormat.QR_CODE, qrCodeWidth, qrCodeHeight);
+
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        MatrixToImageWriter.writeToStream(bitMatrix, fileType, outputStream);
+        byte[] qrCodeBytes = outputStream.toByteArray();
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+        return new ResponseEntity<>(qrCodeBytes, headers, HttpStatus.OK);
+    }
+
 }

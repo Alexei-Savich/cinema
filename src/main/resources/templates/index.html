@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <title>Validation system</title>
@@ -11,7 +11,7 @@
     <h1>Welcome to Validation system!</h1>
     <div>
         <div sec:authorize="hasRole('ROLE_STAFF')">
-            <form th:action="@{/staff/tickets}" method="get" class="form-inline my-3">
+            <form th:action="@{/tickets}" method="get">
                 <input type="number" name="ticketId" th:value="${ticketId}" placeholder="Id...">
                 <button type="submit">Find ticket by id</button>
             </form>
