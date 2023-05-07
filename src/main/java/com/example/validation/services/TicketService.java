@@ -4,6 +4,7 @@ import com.example.validation.dto.TicketDto;
 import com.example.validation.entities.Ticket;
 import com.example.validation.exceptions.TicketAlreadyValidatedException;
 import com.example.validation.exceptions.TicketNotFoundException;
+import com.example.validation.repositories.StaffWorkerRepository;
 import com.example.validation.repositories.TicketRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,15 +17,21 @@ import java.util.List;
 public class TicketService {
 
     private final TicketRepository ticketRepository;
+    private final StaffWorkerRepository staffWorkerRepository;
 
     @Autowired
-    public TicketService(TicketRepository ticketRepository) {
+    public TicketService(TicketRepository ticketRepository, StaffWorkerRepository staffWorkerRepository) {
         this.ticketRepository = ticketRepository;
+        this.staffWorkerRepository = staffWorkerRepository;
     }
 
     public Ticket getTicketById(Long id) {
         return ticketRepository.findById(id)
                 .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id: " + id));
+    }
+
+    public Ticket getTicketByIdNullable(Long id) {
+        return ticketRepository.findById(id).orElse(null);
     }
 
     public Ticket createTicket(TicketDto ticketDetails) {
@@ -80,10 +87,10 @@ public class TicketService {
         if (ticketDetails.getHall() != null) {
             ticket.setHall(ticketDetails.getHall());
         }
-        if(ticketDetails.getAdditionalServices() != null){
+        if (ticketDetails.getAdditionalServices() != null) {
             ticket.setAdditionalServices(ticketDetails.getAdditionalServices());
         }
-        if(ticketDetails.getSessionId() != null){
+        if (ticketDetails.getSessionId() != null) {
             ticket.setSessionId(ticketDetails.getSessionId());
         }
         return ticketRepository.save(ticket);
@@ -97,14 +104,14 @@ public class TicketService {
         ticketRepository.delete(ticket);
     }
 
-    public Ticket validateTicket(Long id) {
+    public Ticket validateTicket(Long id, Long workerId) {
         Ticket ticket = ticketRepository.findById(id)
                 .orElseThrow(() -> new TicketNotFoundException("Ticket not found with id: " + id));
 
         if (!ticket.isValidated()) {
             ticket.setValidated(true);
             ticket.setValidatedAt(LocalDateTime.now());
-            //TODO ADD VALIDATED BY WHO
+            ticket.setValidatedBy(staffWorkerRepository.findById(workerId).orElseThrow(() -> new RuntimeException("Worker not found with id: " + workerId)));
             return ticketRepository.save(ticket);
         } else {
             throw new TicketAlreadyValidatedException("Ticket already validated with id: " + id);
@@ -126,7 +133,7 @@ public class TicketService {
         return ticketRepository.findBySessionId(sessionId);
     }
 
-    public List<Ticket> findTicketsByEmail(String email){
+    public List<Ticket> findTicketsByEmail(String email) {
         return ticketRepository.findByEmail(email);
     }
 }

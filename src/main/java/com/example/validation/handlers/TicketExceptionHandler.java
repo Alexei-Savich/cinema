@@ -24,6 +24,6 @@ public class TicketExceptionHandler {
     public ResponseEntity<ApiError> handleTicketAlreadyValidatedException(TicketAlreadyValidatedException ex) {
         String message = ex.getMessage();
         ApiError apiError = new ApiError(HttpStatus.CONFLICT, message, LocalDateTime.now());
-        return new ResponseEntity<>(apiError, HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
     }
 }

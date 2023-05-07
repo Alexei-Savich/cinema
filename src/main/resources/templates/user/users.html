@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin - Users</title>
+    <link th:href="@{/css/styles.css}" rel="stylesheet"/>
+</head>
+<body>
+
+
+<h1>Users</h1>
+<form th:action="@{/admin/users}" method="get" class="form-inline my-3">
+    <input type="text" name="query" th:value="${query}" class="form-control mr-2" placeholder="Search...">
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th>Email</th>
+        <th>Name</th>
+        <th>Surname</th>
+        <th>Role</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="user : ${users}">
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.name}"></td>
+        <td th:text="${user.surname}"></td>
+        <td th:text="${user.role}"></td>
+        <td>
+            <form th:action="@{/admin/users/edit/{id}(id=${user.workerId})}" method="get">
+                <button type="submit">Edit</button>
+            </form>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<nav>
+    <ul class="pagination">
+        <li class="page-item" th:classappend="${users.first ? 'disabled' : ''}">
+            <a class="page-link" th:href="@{/admin/users(query=${query}, page=${users.number - 1})}">Previous</a>
+        </li>
+        <li class="page-item" th:each="pageNum : ${#numbers.sequence(0, users.totalPages - 1)}"
+            th:classappend="${pageNum == users.number ? 'active' : ''}">
+            <a class="page-link" th:href="@{/admin/users(query=${query}, page=${pageNum})}"
+               th:text="${pageNum + 1}"></a>
+        </li>
+        <li class="page-item" th:classappend="${users.last ? 'disabled' : ''}">
+            <a class="page-link" th:href="@{/admin/users(query=${query}, page=${users.number + 1})}">Next</a>
+        </li>
+    </ul>
+</nav>
+</body>
+</html>
