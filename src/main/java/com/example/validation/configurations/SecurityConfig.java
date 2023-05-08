@@ -4,9 +4,12 @@ import com.example.validation.services.StaffWorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -58,6 +61,15 @@ public class SecurityConfig {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(staffWorkerService)
                 .passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                .requestMatchers(HttpMethod.POST, "/tickets/**")
+                .requestMatchers(HttpMethod.DELETE, "/tickets/**")
+                .requestMatchers(HttpMethod.GET, "/tickets/**")
+                .requestMatchers(HttpMethod.PUT, "/tickets/**");
     }
 
 }
