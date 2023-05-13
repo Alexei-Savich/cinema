@@ -29,7 +29,7 @@ public class StaffController {
         this.staffWorkerService = staffWorkerService;
     }
 
-    @GetMapping("/tickets")
+    @GetMapping("/staff/tickets")
     public String getTicketByIdView(@RequestParam(name = "ticketId", required = false) Long id,
                                     RedirectAttributes redirectAttributes,
                                     Model model) {

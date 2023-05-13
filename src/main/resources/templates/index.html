@@ -10,17 +10,13 @@
 <div style="text-align: center;">
     <h1>Welcome to Validation system!</h1>
     <div>
-        <div sec:authorize="hasRole('ROLE_STAFF')">
-            <form th:action="@{/tickets}" method="get">
-                <input type="number" name="ticketId" th:value="${ticketId}" placeholder="Id...">
-                <button type="submit">Find ticket by id</button>
-            </form>
-        </div>
-        <div sec:authorize="hasRole('ROLE_ADMIN')">
-            <form th:action="@{/admin/users}" method="get">
-                <button type="submit">Users info</button>
-            </form>
-        </div>
+        <form th:action="@{/staff/tickets}" method="get">
+            <input type="number" name="ticketId" th:value="${ticketId}" placeholder="Id...">
+            <button type="submit">Find ticket by id</button>
+        </form>
+        <form th:action="@{/admin/users}" method="get">
+            <button type="submit">Users info</button>
+        </form>
     </div>
     <div style="margin-top: 50px;">
         <form th:action="@{/logout}" method="post">
