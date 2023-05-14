@@ -73,13 +73,6 @@ public class TicketController {
         return new ResponseEntity<>(status, HttpStatus.OK);
     }
 
-    @GetMapping("tickets/{movieName}/at/{time}")
-    public ResponseEntity<List<Ticket>> getTicketsByMovieAndTime(@PathVariable String movieName, @PathVariable String time) {
-        LocalDateTime dateTime = LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
-        List<Ticket> tickets = ticketService.findTicketsByFilmNameAndTimeDate(movieName, dateTime);
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
-    }
-
     @GetMapping("tickets/session/{sessionId}")
     public ResponseEntity<List<Ticket>> getTicketsBySessionId(@PathVariable Long sessionId) {
         List<Ticket> tickets = ticketService.findTicketsBySessionId(sessionId);

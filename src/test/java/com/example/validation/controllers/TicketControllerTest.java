@@ -21,12 +21,15 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(locations = "classpath:application-integrationtest.properties")
+@TestPropertySource(locations = "classpath:application-integration-test.properties")
 public class TicketControllerTest {
 
     @Autowired
@@ -124,4 +127,79 @@ public class TicketControllerTest {
         assertFalse(updatedTicket.isValidated());
     }
 
+    @Test
+    public void getTicketTest() throws Exception {
+        Ticket ticket = ticketRepository.save(new Ticket(1L, "Hall 1", LocalDateTime.now(), "A1", 10.00f, "123456789", "John", "Doe", "john.doe@example.com", "The Matrix", false, null, null, null, 1L));
+
+        mockMvc.perform(get("/tickets/tickets/{id}", ticket.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").value(ticket.getId()))
+                .andExpect(jsonPath("$.hall").value(ticket.getHall()))
+                .andExpect(jsonPath("$.seat").value(ticket.getSeat()))
+                .andExpect(jsonPath("$.price").value(ticket.getPrice()))
+                .andExpect(jsonPath("$.telephoneNumber").value(ticket.getTelephoneNumber()))
+                .andExpect(jsonPath("$.name").value(ticket.getName()))
+                .andExpect(jsonPath("$.surname").value(ticket.getSurname()))
+                .andExpect(jsonPath("$.email").value(ticket.getEmail()))
+                .andExpect(jsonPath("$.filmName").value(ticket.getFilmName()))
+                .andExpect(jsonPath("$.validated").value(ticket.isValidated()));
+    }
+
+    @Test
+    public void checkValidationStatusTest() throws Exception {
+        Ticket ticket = ticketRepository.save(new Ticket(1L, "Hall 1", LocalDateTime.now(), "A1", 10.00f, "123456789", "John", "Doe", "john.doe@example.com", "The Matrix", false, null, null, null, 1L));
+
+        mockMvc.perform(get("/tickets/tickets/{id}/validation-status", ticket.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().string(String.valueOf(ticket.isValidated())));
+    }
+
+    @Test
+    public void getTicketsBySessionIdTest() throws Exception {
+        Ticket ticket1 = ticketRepository.save(new Ticket(1L, "Hall 1", LocalDateTime.now(), "A1", 10.00f, "123456789", "John", "Doe", "john.doe@example.com", "The Matrix", false, null, null, null, 1L));
+
+        Long sessionId = 1L;
+
+        mockMvc.perform(get("/tickets/tickets/session/{sessionId}", sessionId))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].id").value(ticket1.getId()))
+                .andExpect(jsonPath("$.[0].hall").value(ticket1.getHall()))
+                .andExpect(jsonPath("$.[0].seat").value(ticket1.getSeat()))
+                .andExpect(jsonPath("$.[0].price").value(ticket1.getPrice()))
+                .andExpect(jsonPath("$.[0].telephoneNumber").value(ticket1.getTelephoneNumber()))
+                .andExpect(jsonPath("$.[0].name").value(ticket1.getName()))
+                .andExpect(jsonPath("$.[0].surname").value(ticket1.getSurname()))
+                .andExpect(jsonPath("$.[0].email").value(ticket1.getEmail()))
+                .andExpect(jsonPath("$.[0].filmName").value(ticket1.getFilmName()))
+                .andExpect(jsonPath("$.[0].validated").value(ticket1.isValidated()));
+    }
+
+    @Test
+    public void getTicketsByEmailTest() throws Exception {
+        Ticket ticket1 = ticketRepository.save(new Ticket(1L, "Hall 1", LocalDateTime.now(), "A1", 10.00f, "123456789", "John", "Doe", "john.doe@example.com", "The Matrix", false, null, null, null, 1L));
+
+        String email = "john.doe@example.com";
+
+        mockMvc.perform(get("/tickets/tickets/email/{email}", email))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].id").value(ticket1.getId()))
+                .andExpect(jsonPath("$.[0].hall").value(ticket1.getHall()))
+                .andExpect(jsonPath("$.[0].seat").value(ticket1.getSeat()))
+                .andExpect(jsonPath("$.[0].price").value(ticket1.getPrice()))
+                .andExpect(jsonPath("$.[0].telephoneNumber").value(ticket1.getTelephoneNumber()))
+                .andExpect(jsonPath("$.[0].name").value(ticket1.getName()))
+                .andExpect(jsonPath("$.[0].surname").value(ticket1.getSurname()))
+                .andExpect(jsonPath("$.[0].email").value(ticket1.getEmail()))
+                .andExpect(jsonPath("$.[0].filmName").value(ticket1.getFilmName()))
+                .andExpect(jsonPath("$.[0].validated").value(ticket1.isValidated()));
+    }
+
+    @Test
+    public void generateQrCodeTest() throws Exception {
+        Ticket ticket = ticketRepository.save(new Ticket(1L, "Hall 1", LocalDateTime.now(), "A1", 10.00f, "123456789", "John", "Doe", "john.doe@example.com", "The Matrix", false, null, null, null, 1L));
+
+        mockMvc.perform(get("/tickets/qr/{id}", ticket.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(MediaType.IMAGE_PNG));
+    }
 }

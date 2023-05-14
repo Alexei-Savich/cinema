@@ -125,10 +125,6 @@ public class TicketService {
         return ticket.isValidated();
     }
 
-    public List<Ticket> findTicketsByFilmNameAndTimeDate(String filmName, LocalDateTime dateTime) {
-        return ticketRepository.findByFilmNameAndDateTime(filmName, dateTime);
-    }
-
     public List<Ticket> findTicketsBySessionId(Long sessionId) {
         return ticketRepository.findBySessionId(sessionId);
     }
