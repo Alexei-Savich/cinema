@@ -87,7 +87,7 @@ public class TicketController {
 
     @GetMapping("/qr/{id}")
     public ResponseEntity<byte[]> generateQrCode(@PathVariable Long id) throws WriterException, IOException {
-        String qrCodeText = "http://" + serverIp + "/tickets?ticketId=" + id;
+        String qrCodeText = "http://" + serverIp + "/staff/tickets?ticketId=" + id;
         int qrCodeWidth = 250;
         int qrCodeHeight = 250;
         String fileType = "png";
